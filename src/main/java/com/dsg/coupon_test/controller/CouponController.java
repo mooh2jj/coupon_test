@@ -21,6 +21,11 @@ public class CouponController {
     private final AdminCouponService adminCouponService;
 
 
+    @GetMapping("test")
+    public String test() {
+        return "test v1";
+    }
+
     @GetMapping("/list")
     public ResponseEntity<?> list() {
         log.info("coupon list");
