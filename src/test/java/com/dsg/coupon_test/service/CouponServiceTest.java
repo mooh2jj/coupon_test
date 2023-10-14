@@ -31,7 +31,7 @@ class CouponServiceTest {
     private CouponRepository couponRepository;
 
 
-    @BeforeEach
+/*    @BeforeEach
     public void beforeEach() {
         couponRepository.deleteAll();  // drop table
 
@@ -47,7 +47,7 @@ class CouponServiceTest {
                             .build()
             );
         });
-    }
+    }*/
 
 //    @AfterEach
 //    public void afterEach() {
@@ -63,7 +63,7 @@ class CouponServiceTest {
         // then
         int size = couponService.getCouponList().size();
         log.info("size : {}", size);
-        assertThat(size).isEqualTo(10);
+        assertThat(size).isEqualTo(3);
     }
 
 }

@@ -6,14 +6,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "coupon")
-@ToString(exclude = {"couponRecordList"})
+@ToString
 public class Coupon extends BaseTimeEntity {
 
     @Id
@@ -39,9 +37,6 @@ public class Coupon extends BaseTimeEntity {
     private LocalDate startDate;
     @Column(name = "end_date")
     private LocalDate endDate;
-
-    @OneToMany(mappedBy = "coupon")
-    private List<CouponRecord> couponRecordList = new ArrayList<>();
 
     @Builder
     public Coupon(String name, String code, CouponType type, CouponStatus status, LocalDate startDate, LocalDate endDate) {
