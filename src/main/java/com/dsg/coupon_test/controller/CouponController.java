@@ -21,7 +21,7 @@ public class CouponController {
     private final AdminCouponService adminCouponService;
 
 
-    @GetMapping("test")
+    @GetMapping("/test")
     public String test() {
         return "test v1";
     }
