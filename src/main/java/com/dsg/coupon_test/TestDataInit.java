@@ -5,13 +5,17 @@ import com.dsg.coupon_test.enums.CouponStatus;
 import com.dsg.coupon_test.enums.CouponType;
 import com.dsg.coupon_test.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.stream.LongStream;
 
+@Slf4j
 @Component
+@Profile("test")
 @RequiredArgsConstructor
 public class TestDataInit {
 
@@ -22,6 +26,7 @@ public class TestDataInit {
      */
     @PostConstruct
     public void init() {
+        log.info("test data init run...");
         LongStream.rangeClosed(1,3).forEach(i -> {
             couponRepository.save(
                     Coupon.builder()
