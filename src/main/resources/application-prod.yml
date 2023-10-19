@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher  # swagger2 ?? ?? ???
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://ec2-43-200-191-242.ap-northeast-2.compute.amazonaws.com:3306/coupon?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: dsg
+    password: 1234
+
+
+  jpa:
+    open-in-view: true # open-in-view: true ??? ???? ??? ??? false? ??
+    hibernate:
+      ddl-auto: create-drop # update, create, create-drop, validate, none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl  # ????, ???? ??? ???? ???
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      dialect: org.hibernate.dialect.MySQL8Dialect
+
+logging:
+  level:
+    org.hibernate.SQL: info
