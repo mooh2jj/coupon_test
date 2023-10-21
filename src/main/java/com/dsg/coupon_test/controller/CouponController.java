@@ -1,15 +1,16 @@
 package com.dsg.coupon_test.controller;
 
+import com.dsg.coupon_test.common.PageResponseDto;
 import com.dsg.coupon_test.dto.request.CouponCreateRequest;
+import com.dsg.coupon_test.dto.request.CouponSearchRequest;
 import com.dsg.coupon_test.dto.response.CouponResponse;
 import com.dsg.coupon_test.service.AdminCouponService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,11 +28,14 @@ public class CouponController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list() {
-        log.info("coupon list");
-        List<CouponResponse> list = adminCouponService.getCouponList();
+    public ResponseEntity<?> list(
+            CouponSearchRequest requestDto
 
-        return ResponseEntity.ok(list);
+    ) {
+        log.info("coupon list");
+        Page<CouponResponse> list = adminCouponService.getCouponList(requestDto);
+
+        return ResponseEntity.ok(PageResponseDto.of(list));
     }
 
     @PostMapping

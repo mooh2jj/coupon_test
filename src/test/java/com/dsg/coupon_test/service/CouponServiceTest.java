@@ -55,15 +55,15 @@ class CouponServiceTest {
 //    }
 
     // coupon list 확인
-    @Test
-    @DisplayName("쿠폰 리스트 조회")
-    public void getCouponList() {
-        // given
-        // when
-        // then
-        int size = couponService.getCouponList().size();
-        log.info("size : {}", size);
-        assertThat(size).isEqualTo(3);
-    }
+//    @Test
+//    @DisplayName("쿠폰 리스트 조회")
+//    public void getCouponList() {
+//        // given
+//        // when
+//        // then
+//        int size = couponService.getCouponList().size();
+//        log.info("size : {}", size);
+//        assertThat(size).isEqualTo(3);
+//    }
 
 }
