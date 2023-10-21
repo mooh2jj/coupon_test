@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Getter
@@ -14,6 +16,8 @@ import java.time.LocalDate;
 @ToString
 public class CouponCreateRequest {
 
+    @NotBlank
+    @Pattern(regexp = "^[가-힣]*$", message = "한글만 입력 가능합니다.")
     private String name;
     private String code;
 

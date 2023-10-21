@@ -43,7 +43,7 @@ public class CouponController {
 
     @PostMapping
     public ResponseEntity<?> create(
-            @RequestBody CouponCreateRequest request
+            @Valid @RequestBody CouponCreateRequest request
     ) {
         log.info("coupon Create");
         adminCouponService.createCoupon(request);
