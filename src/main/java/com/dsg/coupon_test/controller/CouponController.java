@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/admin/coupon")
@@ -29,10 +31,11 @@ public class CouponController {
 
     @GetMapping("/list")
     public ResponseEntity<?> list(
-            CouponSearchRequest requestDto
+            @Valid CouponSearchRequest requestDto
 
     ) {
         log.info("coupon list");
+        log.info("requestDto: {}", requestDto);
         Page<CouponResponse> list = adminCouponService.getCouponList(requestDto);
 
         return ResponseEntity.ok(PageResponseDto.of(list));
