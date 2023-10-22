@@ -1,5 +1,6 @@
 package com.dsg.coupon_test.exception;
 
+import com.dsg.coupon_test.common.dto.ResultDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,11 +16,31 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.dsg.coupon_test.exception.ErrorCode.*;
 import static com.dsg.coupon_test.exception.ErrorCode.INTERNAL_SERVER_ERROR;
 
 @Slf4j
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+
+    // global exception
+//    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(CustomApiException.class)
+    public ResponseEntity<?> handleCustomAPIException(
+            CustomApiException exception,
+            WebRequest webRequest
+    ) {
+        log.error("handleCustomAPIException e", exception);
+
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .timestamp(LocalDateTime.now())
+                .message(exception.getMessage())
+                .description(webRequest.getDescription(false))
+                .errorCode(BAD_REQUEST)
+                .build();
+        return new ResponseEntity<>(ResultDto.fail(400, BAD_REQUEST.getDescription(), errorDetails), HttpStatus.BAD_REQUEST);
+    }
+
 
     // global exception
 //    @ExceptionHandler(Exception.class)
@@ -61,7 +82,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .message(exception.getMessage())
                 .description(request.getDescription(false))
-                .errorCode(ErrorCode.INVALID_REQUEST)
+                .errorCode(INVALID_REQUEST)
                 .build();
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);

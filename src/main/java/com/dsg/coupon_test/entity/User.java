@@ -1,10 +1,7 @@
 package com.dsg.coupon_test.entity;
 
 import com.dsg.coupon_test.enums.UserRole;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -30,4 +27,12 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private UserRole role;
 
+    @Builder
+    public User(Long id, String name, String email, String password, UserRole role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 }
