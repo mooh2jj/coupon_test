@@ -1,6 +1,7 @@
 package com.dsg.coupon_test.dto.request;
 
 import com.dsg.coupon_test.entity.User;
+import com.dsg.coupon_test.enums.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,7 @@ public class RegisterDto {
                 .name(name)
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .role(UserRole.USER)
                 .build();
     }
 }

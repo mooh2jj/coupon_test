@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.dsg.coupon_test.exception.ErrorCode.*;
-import static com.dsg.coupon_test.exception.ErrorCode.INTERNAL_SERVER_ERROR;
+import static com.dsg.coupon_test.exception.ResponseCode.*;
+import static com.dsg.coupon_test.exception.ResponseCode.INVALID_REQUEST;
 
 @Slf4j
 @RestControllerAdvice
@@ -32,32 +31,19 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         log.error("handleCustomAPIException e", exception);
 
-        ErrorDetails errorDetails = ErrorDetails.builder()
-                .timestamp(LocalDateTime.now())
-                .message(exception.getMessage())
-                .description(webRequest.getDescription(false))
-                .errorCode(BAD_REQUEST)
-                .build();
-        return new ResponseEntity<>(ResultDto.fail(400, BAD_REQUEST.getDescription(), errorDetails), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResultDto.fail(INVALID_REQUEST, exception.getErrorMessage(), null), HttpStatus.BAD_REQUEST);
     }
 
 
     // global exception
 //    @ExceptionHandler(Exception.class)
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDetails> handleGlobalException(
+    public ResponseEntity<?> handleGlobalException(
             Exception exception,
             WebRequest webRequest) {
-
-        ErrorDetails errorDetails = ErrorDetails.builder()
-                .timestamp(LocalDateTime.now())
-                .message(exception.getMessage())
-                .description(webRequest.getDescription(false))
-                .errorCode(INTERNAL_SERVER_ERROR)
-                .build();
-        exception.printStackTrace();
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-//        return ResponseEntity.ok(new Result(FAIL_CODE.getCode(), FAIL_CODE.getMessage(), exception.getMessage(), null));
+//        exception.printStackTrace();
+//        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ResultDto.fail(INTERNAL_SERVER_ERROR, exception.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //BindingResult Validation 처리
@@ -78,13 +64,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        ErrorDetails errorDetails = ErrorDetails.builder()
-                .timestamp(LocalDateTime.now())
-                .message(exception.getMessage())
-                .description(request.getDescription(false))
-                .errorCode(INVALID_REQUEST)
-                .build();
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResultDto.fail(INVALID_REQUEST, exception.getMessage(), null), HttpStatus.BAD_REQUEST);
     }
 }

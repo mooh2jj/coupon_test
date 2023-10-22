@@ -5,19 +5,19 @@ import lombok.Getter;
 @Getter
 public class CustomApiException extends RuntimeException {
 
+    private final ResponseCode responseCode;
     private final String errorMessage;
-    private final ErrorCode errorCode;
 
-    public CustomApiException(ErrorCode errorCode) {
-        super(errorCode.getDescription());
-        this.errorCode = errorCode;
-        this.errorMessage = errorCode.getDescription();
+    public CustomApiException(ResponseCode responseCode) {
+        super(responseCode.getDescription());
+        this.responseCode = responseCode;
+        this.errorMessage = responseCode.getDescription();
     }
 
-    public CustomApiException(ErrorCode errorCode, String errorMessage) {
-        super(errorCode.getDescription());
-        this.errorCode = errorCode;
-        this.errorMessage = errorCode.getDescription() + errorMessage;
+    public CustomApiException(ResponseCode responseCode, String errorMessage) {
+        super(responseCode.getDescription());
+        this.responseCode = responseCode;
+        this.errorMessage = responseCode.getDescription() + errorMessage;
     }
 
 }

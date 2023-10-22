@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.dsg.coupon_test.exception.ErrorCode.DUPLICATED_ID;
+import static com.dsg.coupon_test.exception.ResponseCode.DUPLICATED_ID;
 
 @Slf4j
 @Service
