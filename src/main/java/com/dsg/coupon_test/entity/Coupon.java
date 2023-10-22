@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "coupon")
+@Table(name = "coupons")
 @ToString
 public class Coupon extends BaseTimeEntity {
 

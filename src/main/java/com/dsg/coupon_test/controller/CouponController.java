@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/admin/coupon")
+@RequestMapping("/api/v1/coupon")
 @RequiredArgsConstructor
 public class CouponController {
 

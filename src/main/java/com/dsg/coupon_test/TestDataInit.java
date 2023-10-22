@@ -22,7 +22,7 @@ public class TestDataInit {
     /**
      * 테스트용 데이터 추가
      */
-    @PostConstruct
+/*    @PostConstruct
     public void init() {
         log.info("test data init run...");
         LongStream.rangeClosed(1,3).forEach(i -> {
@@ -37,6 +37,6 @@ public class TestDataInit {
                             .build()
             );
         });
-    }
+    }*/
 
 }

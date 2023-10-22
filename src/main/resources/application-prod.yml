@@ -4,7 +4,7 @@ server:
 spring:
   mvc:
     pathmatch:
-      matching-strategy: ant_path_matcher  # swagger2 ?? ?? ???
+      matching-strategy: ant_path_matcher  # swagger2 매핑
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -14,11 +14,11 @@ spring:
 
 
   jpa:
-    open-in-view: true # open-in-view: true ??? ???? ??? ??? false? ??
+    open-in-view: false
     hibernate:
-      ddl-auto: create-drop # update, create, create-drop, validate, none
+      ddl-auto: none # update, create, create-drop, validate, none
       naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl  # ????, ???? ??? ???? ???
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl  # db table naming
     show-sql: true
     properties:
       hibernate.format_sql: true

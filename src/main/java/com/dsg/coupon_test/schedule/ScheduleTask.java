@@ -15,7 +15,6 @@ public class ScheduleTask {
     @Scheduled(cron = "0 0 0 * * *")       // 매일 자정 12시에 check
     public void couponExpireCheck() {
         log.info("coupon expire check run...");
-//        adminCouponService.expireCouponRecord();
     }
 
 }

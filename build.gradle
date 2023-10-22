@@ -38,6 +38,11 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.querydsl:querydsl-apt'
 
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // security test
+    testCompileOnly "org.springframework.security:spring-security-test"
+
     // h2
     runtimeOnly 'com.h2database:h2'
 
