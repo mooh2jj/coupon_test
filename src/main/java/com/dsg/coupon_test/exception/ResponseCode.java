@@ -12,8 +12,8 @@ public enum ResponseCode {
     INTERNAL_SERVER_ERROR(500, "서버에 오류가 발생했습니다."),
 
     UNAUTHORIZED_CODE(401, "인증되지 않은 사용자입니다."),
-    ROLE_NOT_FOUND(403, "해당되는 권한을 찾을 수 없습니다."),
     EXPIRED_JWT_TOKEN(401, "만료된 토큰입니다."),
+    FORBIDDEN_CODE(403, "권한이 없습니다."),
 
     INVALID_REQUEST(400, "잘못된 요청입니다."),
     NO_TARGET(404, "해당되는 대상이 없습니다."),

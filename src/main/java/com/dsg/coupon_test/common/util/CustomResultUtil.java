@@ -32,4 +32,19 @@ public class CustomResultUtil {
 
     }
 
+    public static void forbidden(HttpServletResponse response, String message) {
+
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                ResultDto<Object> resultDto = ResultDto.fail(ResponseCode.FORBIDDEN_CODE, message, null);
+                String responseBody = mapper.registerModule(new JavaTimeModule()).writeValueAsString(resultDto);
+
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().println(responseBody);
+            } catch (IOException e) {
+                log.error("forbidden error", e);
+            }
+    }
 }

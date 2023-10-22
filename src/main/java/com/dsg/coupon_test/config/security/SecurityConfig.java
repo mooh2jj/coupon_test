@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import static com.dsg.coupon_test.common.util.CustomResultUtil.forbidden;
 import static com.dsg.coupon_test.common.util.CustomResultUtil.unAuthentication;
 
 @Slf4j
@@ -43,19 +44,22 @@ public class SecurityConfig {
         http.cors().configurationSource(corsConfigurationSource());
 
 
-        http.exceptionHandling()
-                // 인증 정보 없을 때 401 에러 처리
-                .authenticationEntryPoint(authenticationEntryPoint)
-                // 인가 정보 없을 때 403 에러 처리
-                .accessDeniedHandler(jwtAccessDeniedHandler);
+//        http.exceptionHandling()
+//                // 인증 정보 없을 때 401 에러 처리
+//                .authenticationEntryPoint(authenticationEntryPoint)
+//                // 인가 정보 없을 때 403 에러 처리
+//                .accessDeniedHandler(jwtAccessDeniedHandler);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.formLogin().disable();
         http.httpBasic().disable();
 
         // Exception 가로 채기
-//        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-//            unAuthentication(response, authException.getMessage());
-//        });
+        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+            unAuthentication(response, authException.getMessage());
+        });
+        http.exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> {
+            forbidden(response, accessDeniedException.getMessage());
+        });
 
         http.authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
@@ -63,7 +67,8 @@ public class SecurityConfig {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/api/v1/**").authenticated()
+                .antMatchers("/api/v1/user/login", "/api/v1/user/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/admin/**").authenticated()
                 .antMatchers("/api/admin/**").hasRole("ADMIN") // 최근 공식문서에서는 ROLE_ 접미사 안붙여도 됨
                 .anyRequest().permitAll();
 

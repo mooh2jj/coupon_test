@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         // get JWT(token) from http request
-        String token = getJWTfromToken(request);
+        String token = getJWTfromHeader(request);
         log.info("doFilterInternal token: {}", token);
         // validate token
         if (StringUtils.hasText(token) && jwtUtil.validateToken(token)) {
@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // load user associated with token
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
             log.info("userDetails: " + userDetails);
-            // set authentication
+            // set authentication(userDetails -> 임시 세션 SecurityContext에 저장)
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities()
             );
@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     // Bearer <accessToken>
-    private String getJWTfromToken(HttpServletRequest request) {
+    private String getJWTfromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
