@@ -1,5 +1,6 @@
 package com.dsg.coupon_test.config.security;
 
+import com.dsg.coupon_test.config.security.jwt.JwtAccessDeniedHandler;
 import com.dsg.coupon_test.config.security.jwt.JwtAuthenticationEntryPoint;
 import com.dsg.coupon_test.config.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class SecurityConfig {
 
 
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
@@ -40,16 +42,20 @@ public class SecurityConfig {
         http.csrf().disable();
         http.cors().configurationSource(corsConfigurationSource());
 
-        // 인증 정보 없을 대 401 에러 처리
-//        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+
+        http.exceptionHandling()
+                // 인증 정보 없을 때 401 에러 처리
+                .authenticationEntryPoint(authenticationEntryPoint)
+                // 인가 정보 없을 때 403 에러 처리
+                .accessDeniedHandler(jwtAccessDeniedHandler);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.formLogin().disable();
         http.httpBasic().disable();
 
         // Exception 가로 채기
-        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-            unAuthentication(response, authException.getMessage());
-        });
+//        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+//            unAuthentication(response, authException.getMessage());
+//        });
 
         http.authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
