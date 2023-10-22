@@ -1,7 +1,9 @@
 package com.dsg.coupon_test.common.util;
 
 import com.dsg.coupon_test.common.dto.ResultDto;
+import com.dsg.coupon_test.exception.ResponseCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 
@@ -16,12 +18,8 @@ public class CustomResultUtil {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
-            ResultDto<?> resultDto = ResultDto.builder()
-                    .code(401)
-                    .message(msg)
-                    .data(null)
-                    .build();
-            String responseBody = mapper.writeValueAsString(resultDto);
+            ResultDto<Object> resultDto = ResultDto.fail(ResponseCode.UNAUTHORIZED_CODE, msg, null);
+            String responseBody = mapper.registerModule(new JavaTimeModule()).writeValueAsString(resultDto);
 
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.toString());

@@ -1,12 +1,17 @@
-package com.dsg.coupon_test.config;
+package com.dsg.coupon_test.config.security;
 
+import com.dsg.coupon_test.config.security.jwt.JwtAuthenticationEntryPoint;
+import com.dsg.coupon_test.config.security.jwt.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -15,8 +20,12 @@ import static com.dsg.coupon_test.common.util.CustomResultUtil.unAuthentication;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -31,13 +40,15 @@ public class SecurityConfig {
         http.csrf().disable();
         http.cors().configurationSource(corsConfigurationSource());
 
+        // 인증 정보 없을 대 401 에러 처리
+//        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.formLogin().disable();
         http.httpBasic().disable();
 
         // Exception 가로 채기
         http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-            unAuthentication(response, "인증되지 않은 사용자입니다.");
+            unAuthentication(response, authException.getMessage());
         });
 
         http.authorizeRequests()
@@ -49,6 +60,9 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/**").authenticated()
                 .antMatchers("/api/admin/**").hasRole("ADMIN") // 최근 공식문서에서는 ROLE_ 접미사 안붙여도 됨
                 .anyRequest().permitAll();
+
+        // jwt 필터 적용
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -65,4 +79,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 위의 설정 적용
         return source;
     }
+
 }

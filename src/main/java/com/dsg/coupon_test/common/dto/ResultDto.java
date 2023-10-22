@@ -17,7 +17,7 @@ import static com.dsg.coupon_test.exception.ResponseCode.SUCCESS;
 public class ResultDto<T> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    private LocalDateTime timestamp;
+    private final LocalDateTime timestamp;
     private final Integer code; // 200, 400, 500
     private final String message;
     private final String detail;

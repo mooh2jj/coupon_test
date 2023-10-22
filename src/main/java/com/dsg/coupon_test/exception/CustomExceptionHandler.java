@@ -22,8 +22,7 @@ import static com.dsg.coupon_test.exception.ResponseCode.INVALID_REQUEST;
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // global exception
-//    @ExceptionHandler(Exception.class)
+    // custom exception
     @ExceptionHandler(CustomApiException.class)
     public ResponseEntity<?> handleCustomAPIException(
             CustomApiException exception,
@@ -36,7 +35,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     // global exception
-//    @ExceptionHandler(Exception.class)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGlobalException(
             Exception exception,
@@ -54,8 +52,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus status,
             WebRequest request) {
 
-
         log.error("handleMethodArgumentNotValid", exception);
+
         Map<String, String> errors = new HashMap<>();
         exception.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
@@ -63,7 +61,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
             errors.put(fieldName, errorMessage);
         });
-
 
         return new ResponseEntity<>(ResultDto.fail(INVALID_REQUEST, exception.getMessage(), null), HttpStatus.BAD_REQUEST);
     }

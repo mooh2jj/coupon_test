@@ -1,6 +1,7 @@
 package com.dsg.coupon_test.controller;
 
 import com.dsg.coupon_test.common.dto.ResultDto;
+import com.dsg.coupon_test.dto.request.LoginDto;
 import com.dsg.coupon_test.dto.request.RegisterDto;
 import com.dsg.coupon_test.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @Slf4j
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -31,5 +32,16 @@ public class UserController {
         userService.register(registerDto);
 
         return new ResponseEntity<>(ResultDto.success(), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(
+            @Valid @RequestBody LoginDto loginDto
+    ) {
+        log.info("user controller login run...");
+        log.info("loginDto: {}", loginDto);
+        String token = userService.login(loginDto);
+
+        return new ResponseEntity<>(ResultDto.success(token), HttpStatus.OK);
     }
 }
