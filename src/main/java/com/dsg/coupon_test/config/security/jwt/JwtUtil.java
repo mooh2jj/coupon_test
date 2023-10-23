@@ -50,7 +50,7 @@ public class JwtUtil {
     // validate JWT token
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);   // 토큰을 파싱하고, 서명을 확인한다.
             return true;
         } catch (SignatureException ex){
             throw new CustomApiException(ResponseCode.INVALID_REQUEST, "Invalid JWT signature");

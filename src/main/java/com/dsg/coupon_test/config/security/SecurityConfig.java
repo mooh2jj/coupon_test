@@ -69,7 +69,7 @@ public class SecurityConfig {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/api/v1/user/login", "/api/v1/user/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/admin/**").authenticated()
-                .antMatchers("/api/admin/**").hasRole("ADMIN") // 최근 공식문서에서는 ROLE_ 접미사 안붙여도 됨
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN") // 최근 공식문서에서는 ROLE_ 접미사 안붙여도 됨
                 .anyRequest().permitAll();
 
         // jwt 필터 적용

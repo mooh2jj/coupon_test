@@ -37,7 +37,7 @@ public class SecurityConfigTest {
     public void authorization_test() throws Exception {
         // given
         // when
-        ResultActions resultActions = mvc.perform(get("/api/admin/hello"));
+        ResultActions resultActions = mvc.perform(get("/api/v1/admin/hello"));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         int statusCode = resultActions.andReturn().getResponse().getStatus();
         log.info("responseBody: {}", responseBody);
