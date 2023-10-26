@@ -47,4 +47,12 @@ public class Coupon extends BaseTimeEntity {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public boolean isBeforeNow() {
+        return this.endDate.isBefore(LocalDate.now());
+    }
+
+    public void changeExpiredStatus() {
+        this.status = CouponStatus.EXPIRED;
+    }
 }

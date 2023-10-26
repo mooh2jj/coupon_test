@@ -1,5 +1,5 @@
 package com.dsg.coupon_test.enums;
 
 public enum CouponStatus {
-    PRIVATE, PUBLIC
+    PRIVATE, PUBLIC, EXPIRED
 }
