@@ -5,6 +5,7 @@ import com.dsg.coupon_test.config.security.auth.PrincipalDetails;
 import com.dsg.coupon_test.config.security.jwt.JwtUtil;
 import com.dsg.coupon_test.entity.User;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,13 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class JwtUtilTest extends DummyObject {
 
     @Autowired
     private JwtUtil jwtUtil;
 
     @Test
+    @DisplayName("토큰 생성 test")
     public void createToken() {
         // given
         User user = mockUser(1L, "test");
@@ -33,6 +35,7 @@ public class JwtUtilTest extends DummyObject {
     }
 
     @Test
+    @DisplayName("토큰에서 username 가져오기 test")
     public void getUsernameFromToken() {
         // given
         User user = mockUser(1L, "test");
@@ -48,6 +51,7 @@ public class JwtUtilTest extends DummyObject {
     }
 
     @Test
+    @DisplayName("토큰 유효성 검사 test")
     public void validateToken() {
         // given
         User user = mockUser(1L, "test");
